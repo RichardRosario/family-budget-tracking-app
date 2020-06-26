@@ -54,7 +54,7 @@ class UI {
     const amountValue = this.amountInput.value;
     if (expenseValue === "" || amountValue === "" || amountValue < 0) {
       this.expenseFeedback.classList.add("showItem");
-      this.expenseFeedback.innerHTML = `<p>amount cannot be empty</p>`;
+      this.expenseFeedback.innerHTML = `<p>amount cannot be empty or negative</p>`;
       const self = this;
       setTimeout(function () {
         self.expenseFeedback.remove("showItem");
@@ -132,7 +132,18 @@ class UI {
     this.showBalance();
   }
   // delete expense entry
-  deleteExpense(element) {}
+  deleteExpense(element) {
+    let id = parseInt(element.dataset.id);
+    let parent = element.parentElement.parentElement.parentElement;
+    // remove from dom
+    this.expenseList.removeChild(parent);
+    // remove from list
+    let tempList = this.itemList.filter(function (item) {
+      return item.id !== id;
+    });
+    this.itemList = tempList;
+    this.showBalance();
+  }
 }
 
 function eventListeners() {
